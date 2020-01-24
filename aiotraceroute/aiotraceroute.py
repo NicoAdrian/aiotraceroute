@@ -4,7 +4,7 @@ import aiodns
 
 
 class AsyncTraceroute:
-    def __init__(self, dest, port=33333, max_hops=30, timeout=1, packet_size=60):
+    def __init__(self, dest, port=33434, max_hops=30, timeout=1, packet_size=60):
         assert isinstance(dest, str), "dest should be an instance of str"
         assert isinstance(port, int), "port should be an instance of int"
         assert isinstance(max_hops, int), "max_hops should be an instance of int"
