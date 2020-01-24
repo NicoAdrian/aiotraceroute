@@ -1,11 +1,10 @@
 import socket
 import asyncio
 import aiodns
-import time
 
 
 class AsyncTraceroute:
-    def __init__(self, dest, port=33333, max_hops=30, timeout=1):
+    def __init__(self, dest, port=33333, max_hops=30, timeout=1, packet_size=60):
         assert isinstance(dest, str), "dest should be an instance of str"
         assert isinstance(port, int), "port should be an instance of int"
         assert isinstance(max_hops, int), "max_hops should be an instance of int"
@@ -17,8 +16,10 @@ class AsyncTraceroute:
             self.dest_addr = socket.gethostbyname(dest)
         self.port = port
         self.max_hops = max_hops
-        self.timeout = 1
-        self.ttl = 0
+        self.timeout = timeout
+        self.packet_size = packet_size
+        self.i = 0
+        self._ttl = 0
         self._loop = asyncio.get_event_loop()
         self._resolver = aiodns.DNSResolver(loop=self._loop)
         self._queue = asyncio.Queue()
@@ -41,19 +42,21 @@ class AsyncTraceroute:
         return self
 
     async def __anext__(self):
-        if self.ttl == self.max_hops:
+        if self._ttl == self.max_hops:
             self._stop()
             raise StopAsyncIteration
 
         try:
-            start_time = time.time()
-            self.ttl += 1
-            self._tx.setsockopt(socket.SOL_IP, socket.IP_TTL, self.ttl)
-            self._tx.sendto(b"", (self.dest_addr, self.port))
+            self._ttl += 1
+            self.i += 1
+            self._tx.setsockopt(socket.SOL_IP, socket.IP_TTL, self._ttl)
+            self._tx.sendto(b"X" * self.packet_size, (self.dest_addr, self.port))
             next_addr = name = None
             try:
                 _, addr = await asyncio.wait_for(self._queue.get(), self.timeout)
                 next_addr = addr[0]
+                if next_addr == self.dest_addr:
+                    self._ttl = self.max_hops
                 res = await self._resolver.gethostbyaddr(next_addr)
                 name = res.name
             except asyncio.TimeoutError:
@@ -61,11 +64,7 @@ class AsyncTraceroute:
             except aiodns.error.DNSError:
                 pass
 
-            to_wait = self.timeout - (time.time() - start_time)
-            if to_wait > 0:
-                await asyncio.sleep(to_wait)
-
-            return self.ttl, next_addr, name
+            return self.i, next_addr, name
         except:
             self._stop()
             raise
