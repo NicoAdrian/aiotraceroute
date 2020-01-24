@@ -26,6 +26,7 @@ The `AsyncTraceroute` class takes the following arguments:
   * `port`: Destination port (optionnal, default: 33333)
   * `max_hops`: Maximum number of hops before reaching final destination (optionnal, default: 30)
   * `timeout`: Timeout between each hop (optionnal: default: 1s)
+  * `packet_size`: Pakcte size in bytes to send each time (optionnal: default: 60)
 
 The `run()` method runs the traceroute and returns a list of tuples containing (hop_number, address or None, hostname or None)
 ## Python versions
