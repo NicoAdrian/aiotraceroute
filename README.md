@@ -1,11 +1,11 @@
 # Simple asynchronous traceroute
 
 Dead simple module which provides asynchronous traceroute with asynchronous dns resolution.
+Needs root privileges to be executed (for raw socket)
 ## Example
 
 ```python
 import asyncio
-import socket
 from aiotraceroute import AsyncTraceroute
 
 async def main(dest):
