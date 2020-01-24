@@ -3,6 +3,11 @@
 Dead simple module which provides asynchronous traceroute with asynchronous dns resolution.
 
 Needs root privileges to be executed (for raw socket)
+
+## Installation
+`pip install aiotraceroute`
+
+
 ## Example
 
 ```python
