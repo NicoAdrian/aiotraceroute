@@ -29,7 +29,7 @@ asyncio.get_event_loop().run_until_complete(main("google.com"))
 ## API
 The `AsyncTraceroute` class takes the following arguments:
   * `dest`: Traceroute destination, can either be a hostname or an IP address.
-  * `port`: Destination port (optionnal, default: 33333)
+  * `port`: Destination port (optionnal, default: 33434)
   * `max_hops`: Maximum number of hops before reaching final destination (optionnal, default: 30)
   * `timeout`: Timeout between each hop (optionnal: default: 1s)
   * `packet_size`: Pakcte size in bytes to send each time (optionnal: default: 60)
