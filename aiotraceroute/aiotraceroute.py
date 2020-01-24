@@ -70,16 +70,3 @@ class AsyncTraceroute:
         except:
             self._stop()
             raise
-
-
-async def main(dest):
-	# print hop by hop
-	async for n, addr, host in AsyncTraceroute(dest):
-		print(n, addr, host)
-
-	# Or run it without iterating
-	tr = AsyncTraceroute(dest)
-	result = await tr.run()
-	print(result)
-
-asyncio.get_event_loop().run_until_complete(main("google.com"))
