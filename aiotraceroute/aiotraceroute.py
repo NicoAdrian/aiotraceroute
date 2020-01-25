@@ -29,11 +29,6 @@ class AsyncTraceroute:
             self._rx, lambda: self._queue.put_nowait(self._rx.recvfrom(512))
         )
 
-    def _stop(self):
-        self._loop.remove_reader(self._rx)
-        self._rx.close()
-        self._tx.close()
-
     async def run(self):
         return [res async for res in self]
 
@@ -44,11 +39,10 @@ class AsyncTraceroute:
         return self
 
     async def __anext__(self):
-        if self._ttl == self.max_hops:
-            self._stop()
-            raise StopAsyncIteration
-
         try:
+            if self._ttl == self.max_hops:
+                raise StopAsyncIteration
+
             self._ttl += 1
             self.i += 1
             self._tx.setsockopt(socket.SOL_IP, socket.IP_TTL, self._ttl)
@@ -68,5 +62,7 @@ class AsyncTraceroute:
 
             return self.i, next_addr, name
         except:
-            self._stop()
+            self._loop.remove_reader(self._rx)
+            self._rx.close()
+            self._tx.close()
             raise
