@@ -15,14 +15,14 @@ import asyncio
 from aiotraceroute import AsyncTraceroute
 
 async def main(dest):
-	# print hop by hop
-	async for n, addr, host in AsyncTraceroute(dest):
-		print(n, addr, host)
+    # print hop by hop
+    async for n, addr, host in AsyncTraceroute(dest):
+        print(n, addr, host)
 
-	# Or run it without iterating
-	tr = AsyncTraceroute(dest)
-	result = await tr.run()
-	print(result)
+    # Or run it without iterating
+    tr = AsyncTraceroute(dest)
+    result = await tr.run()
+    print(result)
 
 asyncio.get_event_loop().run_until_complete(main("google.com"))
 ```
