@@ -28,7 +28,7 @@ class BasicTestSuite(unittest.TestCase):
         max_hops = 1
         host = "www.google.com"
         async for infos in aiotraceroute.aiotraceroute(host, max_hops=max_hops):
-            results.append(aiotraceroute)
+            results.append(infos)
         self.assertEqual(max_hops, len(results))
 
     @async_test
