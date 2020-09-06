@@ -12,15 +12,15 @@ Needs root privileges to be executed (for raw socket)
 
 ```python
 import asyncio
-from aiotraceroute import AsyncTraceroute
+from aiotraceroute import aiotraceroute
 
 async def main(dest):
     # print hop by hop
-    async for n, addr, host in AsyncTraceroute(dest):
+    async for n, addr, host in aiotraceroute(dest):
         print(n, addr, host)
 
     # Or run it without iterating
-    tr = AsyncTraceroute(dest)
+    tr = aiotraceroute(dest)
     result = await tr.run()
     print(result)
 
@@ -37,3 +37,8 @@ The `AsyncTraceroute` class takes the following arguments:
 The `run()` method runs the traceroute and returns a list of tuples containing hop_number, address or None, hostname or None
 ## Python versions
 Python >= 3.6 are supported
+
+## Tests
+
+This project uses `unittest`.
+Run `make init` then `sudo make test`

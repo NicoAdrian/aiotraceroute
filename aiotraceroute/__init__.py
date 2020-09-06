@@ -1,1 +1,1 @@
-from .aiotraceroute import AsyncTraceroute
+from .aiotraceroute import aiotraceroute

@@ -3,12 +3,19 @@ import asyncio
 import aiodns
 
 
-class AsyncTraceroute:
+def aiotraceroute(*args, **kwargs):
+    return _AsyncTraceroute(*args, **kwargs)
+
+
+class _AsyncTraceroute:
     def __init__(self, dest, port=33434, max_hops=30, timeout=1, packet_size=60):
-        assert isinstance(dest, str), "dest should be an instance of str"
-        assert isinstance(port, int), "port should be an instance of int"
-        assert isinstance(max_hops, int), "max_hops should be an instance of int"
-        assert isinstance(timeout, int), "timeout should be an instance of int"
+        assert isinstance(dest, str), "Expected attribute 'dest' to be str"
+        assert isinstance(port, int), "Expected attribute 'port' to be int"
+        assert isinstance(max_hops, int), "Expected attribute 'max_hops' to be int"
+        assert isinstance(timeout, int), "Expected attribute 'timeout' to be int"
+        assert isinstance(
+            packet_size, int
+        ), "Expected attribute 'packet_size' to be int"
         try:
             socket.inet_aton(dest)
             self.dest_addr = dest
