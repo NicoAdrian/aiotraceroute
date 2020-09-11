@@ -6,7 +6,7 @@ with open("README.md") as fd:
 
 setup(
     name="aiotraceroute",
-    version="0.1.5",
+    version="1.0.0",
     description="Asynchronous traceroute in python",
     long_description=readme,
     long_description_content_type="text/markdown",
