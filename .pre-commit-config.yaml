@@ -1,0 +1,28 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.3.0
+  hooks:
+  - id: check-executables-have-shebangs
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: end-of-file-fixer
+  - id: fix-encoding-pragma
+  - id: mixed-line-ending
+  - id: pretty-format-json
+    args:
+    - '--autofix'
+    - '--no-sort-keys'
+  - id: requirements-txt-fixer
+  - id: trailing-whitespace
+- repo: https://github.com/psf/black
+  rev: 20.8b1
+  hooks:
+  - id: black
+    language_version: python3
+- repo: https://github.com/PyCQA/flake8
+  rev: 3.8.4
+  hooks:
+  - id: flake8
+    language_version: python3
+    args: [--config, ./.flake8]

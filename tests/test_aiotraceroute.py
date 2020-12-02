@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 import unittest
 import asyncio
-import aiodns
 import socket
 from context import aiotraceroute
 
@@ -33,7 +33,6 @@ class BasicTestSuite(unittest.TestCase):
 
     @async_test
     async def test_run(self):
-        results = []
         max_hops = 2
         host = "www.google.com"
         tr = await aiotraceroute.aiotraceroute(host, max_hops=max_hops).run()

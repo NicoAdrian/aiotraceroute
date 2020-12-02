@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 
 
@@ -16,5 +17,5 @@ setup(
     license="MIT",
     keywords=["traceroute", "async", "asyncio"],
     packages=find_packages(),
-    install_requires=["aiodns"]
+    install_requires=["aiodns"],
 )
