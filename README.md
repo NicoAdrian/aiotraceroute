@@ -27,7 +27,7 @@ async def main(dest):
 asyncio.get_event_loop().run_until_complete(main("google.com"))
 ```
 ## API
-The `aiotraceroute` function takes the following arguments:
+The `traceroute` function takes the following arguments:
   * `dest`: Traceroute destination, can either be a hostname or an IP address.
   * `port`: Destination port (optionnal, default: 33434)
   * `max_hops`: Maximum number of hops before reaching final destination (optionnal, default: 30)
