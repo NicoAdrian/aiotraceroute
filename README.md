@@ -12,15 +12,15 @@ Needs root privileges to be executed (for raw socket)
 
 ```python
 import asyncio
-from aiotraceroute import aiotraceroute
+from aiotraceroute import traceroute
 
 async def main(dest):
     # print hop by hop
-    async for n, addr, host in aiotraceroute(dest):
+    async for n, addr, host in traceroute(dest):
         print(n, addr, host)
 
     # Or run it without iterating
-    tr = aiotraceroute(dest)
+    tr = traceroute(dest)
     result = await tr.run()
     print(result)
 

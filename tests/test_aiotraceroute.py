@@ -18,7 +18,7 @@ class BasicTestSuite(unittest.TestCase):
         host = "www.google.com"
         dest_addr = socket.gethostbyname(host)
         found_addr = None
-        async for n, addr, host in aiotraceroute.aiotraceroute(host):
+        async for n, addr, host in aiotraceroute.traceroute(host):
             found_addr = addr
         self.assertEqual(found_addr, dest_addr)
 
@@ -27,7 +27,7 @@ class BasicTestSuite(unittest.TestCase):
         results = []
         max_hops = 1
         host = "www.google.com"
-        async for infos in aiotraceroute.aiotraceroute(host, max_hops=max_hops):
+        async for infos in aiotraceroute.traceroute(host, max_hops=max_hops):
             results.append(infos)
         self.assertEqual(max_hops, len(results))
 
@@ -35,7 +35,7 @@ class BasicTestSuite(unittest.TestCase):
     async def test_run(self):
         max_hops = 2
         host = "www.google.com"
-        tr = await aiotraceroute.aiotraceroute(host, max_hops=max_hops).run()
+        tr = await aiotraceroute.traceroute(host, max_hops=max_hops).run()
         self.assertEqual(len(tr), max_hops)
 
 

@@ -4,7 +4,7 @@ import asyncio
 import aiodns
 
 
-def aiotraceroute(*args, **kwargs):
+def traceroute(*args, **kwargs):
     return _AsyncTraceroute(*args, **kwargs)
 
 
@@ -14,9 +14,7 @@ class _AsyncTraceroute:
         assert isinstance(port, int), "Expected attribute 'port' to be int"
         assert isinstance(max_hops, int), "Expected attribute 'max_hops' to be int"
         assert isinstance(timeout, int), "Expected attribute 'timeout' to be int"
-        assert isinstance(
-            packet_size, int
-        ), "Expected attribute 'packet_size' to be int"
+        assert isinstance(packet_size, int), "Expected attribute 'packet_size' to be int"
         try:
             socket.inet_aton(dest)
             self.dest_addr = dest
@@ -33,9 +31,7 @@ class _AsyncTraceroute:
         self._queue = asyncio.Queue()
         self._rx = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
         self._tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        self._loop.add_reader(
-            self._rx, lambda: self._queue.put_nowait(self._rx.recvfrom(512))
-        )
+        self._loop.add_reader(self._rx, lambda: self._queue.put_nowait(self._rx.recvfrom(512)))
 
     async def run(self):
         return [res async for res in self]
