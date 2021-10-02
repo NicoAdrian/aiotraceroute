@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
 import socket
 import asyncio
-import aiodns
+import aiodns  # type: ignore
+from typing import Awaitable, List, Tuple, AsyncIterator, AsyncGenerator, Any, Optional
 
 
-def traceroute(*args, **kwargs):
-    return _AsyncTraceroute(*args, **kwargs)
+def traceroute(*args, **kwargs) -> "AsyncTraceroute":
+    return AsyncTraceroute(*args, **kwargs)
 
 
-class _AsyncTraceroute:
-    def __init__(self, dest, port=33434, max_hops=30, timeout=1, packet_size=60):
-        assert isinstance(dest, str), "Expected attribute 'dest' to be str"
-        assert isinstance(port, int), "Expected attribute 'port' to be int"
-        assert isinstance(max_hops, int), "Expected attribute 'max_hops' to be int"
-        assert isinstance(timeout, int), "Expected attribute 'timeout' to be int"
-        assert isinstance(packet_size, int), "Expected attribute 'packet_size' to be int"
+class AsyncTraceroute:
+    def __init__(
+        self, dest: str, port: int = 33434, max_hops: int = 30, timeout: int = 1, packet_size: int = 60
+    ) -> None:
         try:
             socket.inet_aton(dest)
             self.dest_addr = dest
@@ -28,21 +26,21 @@ class _AsyncTraceroute:
         self._ttl = 0
         self._loop = asyncio.get_event_loop()
         self._resolver = aiodns.DNSResolver(loop=self._loop)
-        self._queue = asyncio.Queue()
+        self._queue = asyncio.Queue()  # type: asyncio.Queue[Tuple[bytes, Any]]
         self._rx = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
         self._tx = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self._loop.add_reader(self._rx, lambda: self._queue.put_nowait(self._rx.recvfrom(512)))
 
-    async def run(self):
+    async def run(self) -> List[Tuple[int, Optional[str], Optional[str]]]:
         return [res async for res in self]
 
-    def __iter__(self):
+    def __iter__(self) -> None:
         raise RuntimeError("You need to use the syntax 'async for'")
 
-    def __aiter__(self):
+    def __aiter__(self) -> "AsyncTraceroute":
         return self
 
-    async def __anext__(self):
+    async def __anext__(self) -> Tuple[int, Optional[str], Optional[str]]:
         try:
             if self._ttl == self.max_hops:
                 raise StopAsyncIteration
